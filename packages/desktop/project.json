@@ -1,51 +1,64 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
   "sourceRoot": "packages/desktop/src",
+  "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx-plus/nuxt:browser",
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "buildDir": "dist/packages/desktop"
-      },
-      "configurations": {
-        "production": {}
-      }
-    },
-    "serve": {
-      "executor": "@nx-plus/nuxt:server",
-      "options": {
-        "browserTarget": "desktop:build",
-        "dev": true
+        "outputPath": "dist/packages/desktop",
+        "main": "packages/desktop/src/main.ts",
+        "tsConfig": "packages/desktop/tsconfig.app.json",
+        "assets": ["packages/desktop/src/assets"]
       },
       "configurations": {
         "production": {
-          "browserTarget": "desktop:build:production",
-          "dev": false
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/desktop/src/environments/environment.ts",
+              "with": "packages/desktop/src/environments/environment.prod.ts"
+            }
+          ]
         }
       }
     },
-    "static": {
-      "executor": "@nx-plus/nuxt:static",
+    "serve": {
+      "executor": "nx:run-commands",
+      "inputs": ["{workspaceRoot}/dist/packages/desktop"],
       "options": {
-        "browserTarget": "desktop:build:production"
+        "command": "npx electron dist/packages/desktop/main.js"
+       },
+      "dependsOn": ["build"],
+      "configurations": {
+        "production": {
+        }
+      }
+    },
+    "package": {
+      "executor": "nx:run-commands",
+      "inputs": ["{workspaceRoot}/dist/packages/desktop"],
+      "options": {
+        "command": "npx electron-builder --config packages/desktop/build.yaml"
+       },
+      "dependsOn": ["build"],
+      "configurations": {
+        "production": {
+          "command": "npx electron-builder --config packages/desktop/build.yaml --publish onTagOrDraft "
+        }
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/desktop/**/*.{ts,tsx,vue}"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/desktop"],
-      "options": {
-        "jestConfig": "packages/desktop/jest.config.ts",
-        "passWithNoTests": true
+        "lintFilePatterns": ["packages/desktop/**/*.ts"]
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["frontend"]
 }
