@@ -1,12 +1,12 @@
 module.exports = {
-  displayName: 'desktop',
+  displayName: 'frontend',
   preset: '../../jest.preset.js',
   transform: {
     '.*.(vue)$': '@vue/vue2-jest',
     '^.+.ts$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
-  coverageDirectory: '../../coverage/packages/desktop',
+  coverageDirectory: '../../coverage/packages/frontend',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
@@ -16,6 +16,6 @@ module.exports = {
   },
   globals: {
     'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
-    'vue-jest': { tsConfig: 'packages/desktop/tsconfig.spec.json' },
+    'vue-jest': { tsConfig: 'packages/frontend/tsconfig.spec.json' },
   },
 };

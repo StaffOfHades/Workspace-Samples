@@ -1,12 +1,12 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "packages/desktop/src",
+  "sourceRoot": "packages/frontend/src",
   "targets": {
     "build": {
       "executor": "@nx-plus/nuxt:browser",
       "options": {
-        "buildDir": "dist/packages/desktop"
+        "buildDir": "dist/packages/frontend"
       },
       "configurations": {
         "production": {}
@@ -15,12 +15,12 @@
     "serve": {
       "executor": "@nx-plus/nuxt:server",
       "options": {
-        "browserTarget": "desktop:build",
+        "browserTarget": "frontend:build",
         "dev": true
       },
       "configurations": {
         "production": {
-          "browserTarget": "desktop:build:production",
+          "browserTarget": "frontend:build:production",
           "dev": false
         }
       }
@@ -28,21 +28,21 @@
     "static": {
       "executor": "@nx-plus/nuxt:static",
       "options": {
-        "browserTarget": "desktop:build:production"
+        "browserTarget": "frontend:build:production"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/desktop/**/*.{ts,tsx,vue}"]
+        "lintFilePatterns": ["packages/frontend/**/*.{ts,tsx,vue}"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/desktop"],
+      "outputs": ["coverage/packages/frontend"],
       "options": {
-        "jestConfig": "packages/desktop/jest.config.ts",
+        "jestConfig": "packages/frontend/jest.config.ts",
         "passWithNoTests": true
       }
     }
