@@ -1,0 +1,43 @@
+name: Desktop release
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  release:
+    if: ${{ github.event.label.name == 'release' }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Set SHAs
+        uses: nrwl/nx-set-shas@v2
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies for differrent linux flavors
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          sudo apt-get install --no-install-recommends -y libopenjp2-tools
+          sudo apt-get install --no-install-recommends -y bsdtar
+
+      - name: Publish electron app
+        run: >
+          npm ci
+          npx nx affected --target=package  --projects=desktop --configuration=production
+          ls -a dist/packages/desktop/dist
