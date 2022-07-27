@@ -20,11 +20,18 @@ version-resolver:
       - 'major'
   minor:
     labels:
-      - 'minor'
+      - 'feature'
+      - 'enhancement'
+      - 'chore'
   patch:
     labels:
-      - 'patch'
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
   default: patch
+exclude-labels:
+  - 'release'
+  - 'skip-changelog'
 template: |
   ## Changes
 
