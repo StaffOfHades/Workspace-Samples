@@ -1,0 +1,23 @@
+appId: "tech.inferis"
+files:
+  - 'package.json'
+  - 'dist/packages/desktop/**'
+  - '!dist/packages/desktop/dist/**'
+linux:
+  target:
+    - target: "AppImage"
+    - target: "deb"
+    - target: "pacman"
+mac:
+  category: "lifestyle"
+win:
+  target:
+    - target: "nsis"
+      arch: ['x64', 'ia32']
+directories:
+  output: 'dist/packages/desktop/dist'
+publish:
+  provider: 'github'
+  releaseType: 'release'
+nsis:
+  differentialPackage: true

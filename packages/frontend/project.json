@@ -3,7 +3,7 @@
   "projectType": "application",
   "sourceRoot": "packages/frontend/src",
   "targets": {
-    "build": {
+    "build-local": {
       "executor": "@nx-plus/nuxt:browser",
       "options": {
         "buildDir": "dist/packages/frontend"
@@ -15,20 +15,20 @@
     "serve": {
       "executor": "@nx-plus/nuxt:server",
       "options": {
-        "browserTarget": "frontend:build",
+        "browserTarget": "frontend:build-local",
         "dev": true
       },
       "configurations": {
         "production": {
-          "browserTarget": "frontend:build:production",
+          "browserTarget": "frontend:build-local:production",
           "dev": false
         }
       }
     },
-    "static": {
+    "build": {
       "executor": "@nx-plus/nuxt:static",
       "options": {
-        "browserTarget": "frontend:build:production"
+        "browserTarget": "frontend:build-local:production"
       }
     },
     "lint": {
