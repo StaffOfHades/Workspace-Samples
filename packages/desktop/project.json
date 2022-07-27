@@ -1,0 +1,51 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "packages/desktop/src",
+  "targets": {
+    "build": {
+      "executor": "@nx-plus/nuxt:browser",
+      "options": {
+        "buildDir": "dist/packages/desktop"
+      },
+      "configurations": {
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx-plus/nuxt:server",
+      "options": {
+        "browserTarget": "desktop:build",
+        "dev": true
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "desktop:build:production",
+          "dev": false
+        }
+      }
+    },
+    "static": {
+      "executor": "@nx-plus/nuxt:static",
+      "options": {
+        "browserTarget": "desktop:build:production"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/desktop/**/*.{ts,tsx,vue}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/desktop"],
+      "options": {
+        "jestConfig": "packages/desktop/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
