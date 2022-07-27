@@ -42,12 +42,23 @@
       "executor": "nx:run-commands",
       "inputs": ["{workspaceRoot}/dist/packages/desktop"],
       "options": {
-        "command": "npx electron-builder --config packages/desktop/build.yaml"
-       },
+        "commands": [
+          {
+            "command": "npx electron-builder --config packages/desktop/build.yaml",
+            "forwardAllArgs": false
+          }
+        ],
+        "parallel": false
+      },
       "dependsOn": ["build"],
       "configurations": {
         "production": {
-          "command": "npx electron-builder --config packages/desktop/build.yaml --publish onTagOrDraft "
+          "commands": [
+            {
+              "command": "npx electron-builder --config packages/desktop/build.yaml --publish onTagOrDraft",
+              "forwardAllArgs": false
+            }
+          ]
         }
       }
     },
