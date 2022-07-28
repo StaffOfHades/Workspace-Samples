@@ -2,6 +2,8 @@
 import { app, BrowserWindow} from 'electron'
 import path from 'path'
 
+const isDevelopment = process.env.NODE_ENV !== 'production'
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -14,8 +16,17 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "../frontend/dist/index.html"));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  if (isDevelopment) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools()
+  }
+
+  mainWindow.webContents.on('devtools-opened', () => {
+    mainWindow.focus()
+    setImmediate(() => {
+      mainWindow.focus()
+    })
+  })
 }
 
 // This method will be called when Electron has finished

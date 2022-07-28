@@ -1,15 +1,19 @@
 appId: "tech.inferis"
+extraMetadata:
+  main: 'dist/packages/desktop/main.js'
 files:
   - 'package.json'
   - 'dist/packages/desktop/**'
   - '!dist/packages/desktop/dist/**'
 linux:
+  category: "Office"
   target:
     - target: "AppImage"
     - target: "deb"
     - target: "pacman"
 mac:
-  category: "lifestyle"
+  target: 'dmg'
+  category: "public.app-category.medical"
 win:
   target:
     - target: "nsis"
