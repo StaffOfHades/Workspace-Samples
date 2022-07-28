@@ -2,13 +2,13 @@ name: Desktop release
 
 on:
   workflow_call:
-    secrets:
-      GITHUB_TOKEN:
-        required: true
   workflow_dispatch:
 
 jobs:
   release:
+    permissions:
+      contents: write
+
     runs-on: ${{ matrix.os }}
 
     strategy:
