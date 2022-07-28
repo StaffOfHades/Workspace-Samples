@@ -1,14 +1,14 @@
 name: Desktop release
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches: [ main ]
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
   workflow_dispatch:
 
 jobs:
   release:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') }}
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -39,3 +39,5 @@ jobs:
           npm ci
           npx nx affected --target=package --projects=desktop --configuration=production
           ls -a dist/packages/desktop/dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
