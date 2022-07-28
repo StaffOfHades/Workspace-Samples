@@ -55,4 +55,4 @@ jobs:
           default_author: github_actions
   relase:
     needs: set_version
-    uses: .github/workflows/workflow-release.yml
+    uses: ./github/workflows/workflow-release.yml
