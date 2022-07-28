@@ -55,4 +55,4 @@ jobs:
           default_author: github_actions
   relase:
     needs: set_version
-    uses: StaffOfHades/Workspace-Samples/.github/workflows/workflow-release.yml.yml@release
+    uses: .github/workflows/workflow-release.yml
