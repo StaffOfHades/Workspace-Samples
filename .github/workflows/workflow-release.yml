@@ -41,3 +41,16 @@ jobs:
           ls -a dist/packages/desktop/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add yaml files to server
+        run: cp dist/packages/desktop/dist/*.yml packages/server/public/desktop-updates/
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          base: ${{ github.event.pull_request.head.ref }}
+          branch: create-pull-request/release
+          commit-message: Add desktop release files
+          delete-branch: true
+          title: Add desktop release files
+          labels: skip-changelog,chore

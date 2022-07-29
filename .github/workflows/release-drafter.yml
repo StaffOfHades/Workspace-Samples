@@ -39,7 +39,7 @@ jobs:
           node-version: 16
       - name: Update npm version
         run: npm version --git-tag-version=false ${{ needs.update_release_draft.outputs.tag_name }}
-      - name: Create pull Request
+      - name: Create pull request
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Update npm version
