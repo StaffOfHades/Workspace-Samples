@@ -1,11 +1,14 @@
 name: Desktop release
 
 on:
-  workflow_call:
+  pull_request:
+    branches: [ main ]
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 jobs:
   release:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') }}
     runs-on: ${{ matrix.os }}
 
     strategy:

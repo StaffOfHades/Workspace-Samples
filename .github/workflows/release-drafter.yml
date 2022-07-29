@@ -4,7 +4,6 @@ on:
   push:
     # branches to consider in the event; optional, defaults to all
     branches:
-      - main
       - dev
   workflow_dispatch:
 
@@ -19,28 +18,25 @@ jobs:
     outputs:
        tag_name: ${{ steps.release_drafter.outputs.tag_name }}
     steps:
-      # Drafts your next Release notes as Pull Requests are merged into "dev & main"
+      # Drafts your next Release notes as Pull Requests are merged into "dev"
       - uses: release-drafter/release-drafter@v5
         id: release_drafter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   set_version:
-    if: ${{ contains(github.event.ref, 'dev') }}
+    permissions:
+      contents: write
+      requests: write
     runs-on: self-hosted
     needs: update_release_draft
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: Update npm version
         run: npm version --git-tag-version=false ${{ needs.update_release_draft.outputs.tag_name }}
-      - uses: EndBug/add-and-commit@v9
-        with:
-          message: Update version
-          default_author: github_actions
+      - name: Create pull Request
+        uses: peter-evans/create-pull-request@v4
