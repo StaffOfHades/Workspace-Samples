@@ -40,3 +40,8 @@ jobs:
         run: npm version --git-tag-version=false ${{ needs.update_release_draft.outputs.tag_name }}
       - name: Create pull Request
         uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Update npm version
+          delete-branch: true
+          title: Version bump
+          labels: skip-changelog,chore
