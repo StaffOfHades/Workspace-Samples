@@ -1,6 +1,7 @@
-name: Release Drafter
+name: Auto-labeler by Release Drafter
 
 on:
+  # pull_request event is required only for autolabeler
   pull_request:
     # Only following types are handled by the action, but one can default to all as well
     types: [opened, reopened, synchronize]
@@ -18,7 +19,3 @@ jobs:
       - uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  release:
-    if: ${{ github.event.pull_request.base.ref == 'main' && contains(github.event.pull_request.labels.*.name, 'release') }}
-    needs: autolabeler
-    uses: ./.github/workflows/workflow-release.yml
