@@ -1,0 +1,9 @@
+version: 0.1.0
+files:
+  - url: workspace-samples-0.1.0.AppImage
+    sha512: TnVb5T7LxmhjQjOHWDEIDJtkmePQvU12p1uEY4J3VmOOB23281EdO7ZuYbxtOV0/DPUQc6iDY9wvTHuFs67ZCg==
+    size: 105463997
+    blockMapSize: 110801
+path: workspace-samples-0.1.0.AppImage
+sha512: TnVb5T7LxmhjQjOHWDEIDJtkmePQvU12p1uEY4J3VmOOB23281EdO7ZuYbxtOV0/DPUQc6iDY9wvTHuFs67ZCg==
+releaseDate: '2022-07-29T18:47:17.089Z'
