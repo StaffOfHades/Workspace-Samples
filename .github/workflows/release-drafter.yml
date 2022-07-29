@@ -25,7 +25,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   set_version:
-    if: ${{ contains(github.event.ref, 'main') }}
+    if: ${{ contains(github.event.ref, 'dev') }}
     runs-on: self-hosted
     needs: update_release_draft
     steps:
