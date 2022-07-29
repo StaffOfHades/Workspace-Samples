@@ -16,6 +16,7 @@ jobs:
       contents: write  # for release-drafter/release-drafter to create a github release
     runs-on: self-hosted
     outputs:
+       body: ${{ steps.release_drafter.outputs.body }}
        tag_name: ${{ steps.release_drafter.outputs.tag_name }}
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "dev"
@@ -42,6 +43,10 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Update npm version
+          body: |
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action.update_release_draft.
+
+            ${{ needs.update_release_draft.outputs.body }}
           delete-branch: true
-          title: Version bump
+          title: Version bump ${{ needs.update_release_draft.outputs.tag_name }}}
           labels: skip-changelog,chore
