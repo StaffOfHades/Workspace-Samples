@@ -7,13 +7,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
+  publish:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'release') }}
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+
+    outputs:
+      macos-latest: ${{ steps.file_unix.outputs.macos-latest }}
+      ubuntu-latest: ${{ steps.file_unix.outputs.ubuntu-latest }}
+      windows-latest: ${{ steps.file_windows.outputs.windows-latest }}
 
     steps:
       - name: Checkout repository
@@ -38,12 +43,35 @@ jobs:
         run: |
           npm ci
           npx nx affected --target=package --projects=desktop --configuration=production
-          ls -a dist/packages/desktop/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Output latest file (Windows)
+        id: file_windows
+        if:  ${{ matrix.os == 'windows-latest' }}
+        run: Write-Output "::set-output name=${{ matrix.os }}::$(Get-Content -Path .\dist\packages\desktop\dist\latest.yml)"
+      - name: Output latest file (Unis)
+        id: file_unix
+        if:  ${{ matrix.os != 'windows-latest' }}
+        run: echo "::set-output name=${{ matrix.os }}::$(cat dist/packages/desktop/dist/latest*.yml)"
+
+  update-server-files:
+    runs-on: self-hosted
+    needs: publish
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Add yaml files to server
-        run: cp dist/packages/desktop/dist/*.yml packages/server/public/desktop-updates/
+        run: |
+          echo ${{ needs.publish.outputs.macos-latest }} > packages/server/public/desktop-updates/latest-mac.yml
+          echo ${{ needs.publish.outputs.linux-latest }} > packages/server/public/desktop-updates/latest-linux.yml
+          echo ${{ needs.publish.outputs.windows-latest }} > packages/server/public/desktop-updates/latest.yml
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v4
