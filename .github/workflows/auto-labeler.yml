@@ -1,0 +1,24 @@
+name: Release Drafter
+
+on:
+  pull_request:
+    # Only following types are handled by the action, but one can default to all as well
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  autolabeler:
+    permissions:
+      pull-requests: write  # for release-drafter/release-drafter to add label to PR
+    runs-on: self-hosted
+    steps:
+      - uses: release-drafter/release-drafter@v5
+       env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  relase:
+    if: ${{ github.event.pull_request.base.ref == 'main' && contains(github.event.pull_request.labels.*.name, 'release') }}
+    needs: autolabaler
+    uses: ./.github/workflows/workflow-release.yml
