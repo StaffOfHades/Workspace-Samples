@@ -44,9 +44,11 @@ jobs:
         with:
           commit-message: Update npm version
           body: |
-            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action.update_release_draft.
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action.
+            The following changelog was generated:
 
+            # ${{ needs.update_release_draft.outputs.tag_name }} 🌈
             ${{ needs.update_release_draft.outputs.body }}
           delete-branch: true
-          title: Version bump ${{ needs.update_release_draft.outputs.tag_name }}}
+          title: Version bump ${{ needs.update_release_draft.outputs.tag_name }}
           labels: skip-changelog,chore
