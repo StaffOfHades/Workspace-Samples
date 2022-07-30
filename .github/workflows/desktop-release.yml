@@ -49,11 +49,11 @@ jobs:
       - name: Output latest file (Windows)
         id: file_windows
         if:  ${{ matrix.os == 'windows-latest' }}
-        run: Write-Output "::set-output name=${{ matrix.os }}::$(Get-Content -Path .\dist\packages\desktop\dist\latest.yml)"
+        run: Write-Output "::set-output name=${{ matrix.os }}::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -Encoding byte)))"
       - name: Output latest file (Unis)
         id: file_unix
         if:  ${{ matrix.os != 'windows-latest' }}
-        run: echo "::set-output name=${{ matrix.os }}::$(cat dist/packages/desktop/dist/latest*.yml)"
+        run: echo "::set-output name=${{ matrix.os }}::$(base64 dist/packages/desktop/dist/latest*.yml)"
 
   update-server-files:
     runs-on: self-hosted
@@ -69,9 +69,13 @@ jobs:
 
       - name: Add yaml files to server
         run: |
-          echo ${{ needs.publish.outputs.macos-latest }} > packages/server/public/desktop-updates/latest-mac.yml
-          echo ${{ needs.publish.outputs.linux-latest }} > packages/server/public/desktop-updates/latest-linux.yml
-          echo ${{ needs.publish.outputs.windows-latest }} > packages/server/public/desktop-updates/latest.yml
+          echo ${{ needs.publish.outputs.macos-latest }} > temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest-mac.yml
+          echo ${{ needs.publish.outputs.linux-latest }} > temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest-linux.yml
+          echo ${{ needs.publish.outputs.windows-latest }} > temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest.yml
+          rm temp.txt
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v4
