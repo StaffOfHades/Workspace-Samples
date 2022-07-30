@@ -41,8 +41,8 @@ jobs:
 
       - name: Publish electron app
         run: |
-          npm ci
-          npx nx affected --target=package --projects=desktop --configuration=production
+          yarn install --immutable --immutable-cache --check-cache
+          yarn nx affected --target=package --projects=desktop --configuration=production
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
