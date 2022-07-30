@@ -30,7 +30,7 @@
       "executor": "nx:run-commands",
       "inputs": ["{workspaceRoot}/dist/packages/desktop"],
       "options": {
-        "command": "npx electron dist/packages/desktop/main.js"
+        "command": "yarn electron dist/packages/desktop/main.js"
        },
       "dependsOn": ["build"],
       "configurations": {
@@ -44,7 +44,7 @@
       "options": {
         "commands": [
           {
-            "command": "npx electron-builder --config packages/desktop/build.yaml",
+            "command": "yarn electron-builder --config packages/desktop/build.yaml",
             "forwardAllArgs": false
           }
         ],
@@ -55,7 +55,7 @@
         "production": {
           "commands": [
             {
-              "command": "npx electron-builder --config packages/desktop/build.yaml --publish onTagOrDraft",
+              "command": "yarn electron-builder --config packages/desktop/build.yaml --publish onTagOrDraft",
               "forwardAllArgs": false
             }
           ]
