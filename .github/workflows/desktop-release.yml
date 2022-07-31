@@ -16,9 +16,9 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     outputs:
-      macos-latest: ${{ steps.file_unix.outputs.macos-latest }}
-      ubuntu-latest: ${{ steps.file_unix.outputs.ubuntu-latest }}
-      windows-latest: ${{ steps.file_windows.outputs.windows-latest }}
+      macos-latest: ${{ steps.file_mac.outputs.latest }}
+      ubuntu-latest: ${{ steps.file_ubuntu.outputs.latest }}
+      windows-latest: ${{ steps.file_windows.outputs.latest }}
 
     steps:
       - name: Checkout repository
@@ -46,14 +46,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Output latest file (Mac)
+        id: file_mac
+        if:  ${{ matrix.os == 'mac-latest' }}
+        run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
+      - name: Output latest file (Ubuntu)
+        id: file_ubuntu
+        if:  ${{ matrix.os == 'ubuntu-latest' }}
+        run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-linux.yml)"
       - name: Output latest file (Windows)
         id: file_windows
         if:  ${{ matrix.os == 'windows-latest' }}
-        run: Write-Output "::set-output name=${{ matrix.os }}::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
-      - name: Output latest file (Unis)
-        id: file_unix
-        if:  ${{ matrix.os != 'windows-latest' }}
-        run: echo "::set-output name=${{ matrix.os }}::$(base64 dist/packages/desktop/dist/latest*.yml)"
+        run: Write-Output "::set-output name=latest::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
 
   update-server-files:
     runs-on: self-hosted
