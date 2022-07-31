@@ -49,7 +49,7 @@ jobs:
       - name: Output latest file (Windows)
         id: file_windows
         if:  ${{ matrix.os == 'windows-latest' }}
-        run: Write-Output "::set-output name=${{ matrix.os }}::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -Encoding byte)))"
+        run: Write-Output "::set-output name=${{ matrix.os }}::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
       - name: Output latest file (Unis)
         id: file_unix
         if:  ${{ matrix.os != 'windows-latest' }}
