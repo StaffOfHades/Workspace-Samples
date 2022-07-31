@@ -81,12 +81,7 @@ jobs:
           base64 --decode temp.txt > packages/server/public/desktop-updates/latest.yml
           rm temp.txt
 
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          base: ${{ github.event.pull_request.head.ref }}
-          branch: create-pull-request/release
-          commit-message: Add desktop release files
-          delete-branch: true
-          title: Add desktop release files
-          labels: skip-changelog,chore
+          commit_message: Add desktop release files
