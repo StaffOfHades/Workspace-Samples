@@ -48,7 +48,7 @@ jobs:
 
       - name: Output latest file (Mac)
         id: file_mac
-        if:  ${{ matrix.os == 'mac-latest' }}
+        if:  ${{ matrix.os == 'macos-latest' }}
         run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
       - name: Output latest file (Ubuntu)
         id: file_ubuntu
