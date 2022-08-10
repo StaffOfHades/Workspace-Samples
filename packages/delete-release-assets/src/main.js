@@ -44,7 +44,7 @@ async function deleteReleaseAssets() {
       return response.data
     })
     const assetIdsForTag = allReleases
-      .filter(({ tag_name }) => tag_name === tagName)
+      .filter(({ tag_name }) => tag_name.includes(tagName))
       .map(({ assets }) => assets)
       .flat()
       .map(({ id }) => id)
