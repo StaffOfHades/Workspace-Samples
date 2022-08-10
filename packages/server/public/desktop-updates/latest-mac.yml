@@ -1,0 +1,11 @@
+version: 0.1.0
+files:
+  - url: Desktop-0.1.0.dmg
+    sha512: xcPN9JfzReHAyUsYK/+5/qOLJUyWjC7k0zy8eHTBP64R3XZDpfuxufuMsolWdBOEEpADU6D/QcJHFV2ELgVpyA==
+    size: 101380495
+  - url: Desktop-0.1.0-arm64.dmg
+    sha512: J50Tqz8uF6JAdStP9qKldoMvQtU6z2LKAzcVfIa/vgflt8fZAyRyaSSGq5M53mWtSmhBXMlKJPBmqhGuxDwuEg==
+    size: 98788465
+path: Desktop-0.1.0.dmg
+sha512: xcPN9JfzReHAyUsYK/+5/qOLJUyWjC7k0zy8eHTBP64R3XZDpfuxufuMsolWdBOEEpADU6D/QcJHFV2ELgVpyA==
+releaseDate: '2022-08-10T17:56:58.781Z'
