@@ -17,7 +17,7 @@ jobs:
 
     outputs:
       macos-latest: ${{ steps.file_mac.outputs.latest }}
-      ubuntu-latest: ${{ steps.file_ubuntu.outputs.latest }}
+      linux-latest: ${{ steps.file_linux.outputs.latest }}
       windows-latest: ${{ steps.file_windows.outputs.latest }}
 
     steps:
@@ -51,7 +51,7 @@ jobs:
         if:  ${{ matrix.os == 'macos-latest' }}
         run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
       - name: Output latest file (Ubuntu)
-        id: file_ubuntu
+        id: file_linux
         if:  ${{ matrix.os == 'ubuntu-latest' }}
         run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-linux.yml)"
       - name: Output latest file (Windows)
