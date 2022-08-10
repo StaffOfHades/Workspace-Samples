@@ -1,0 +1,11 @@
+name: Delete release assets
+description: Given a tag name, remove all assets for found release
+inputs:
+  tag:
+    description: The tag name to use to identify the release
+    required: true
+  token:
+    description: Authorization token for Github
+runs:
+  using: node16
+  main: ./packages/delete-release-assets/src/main.js

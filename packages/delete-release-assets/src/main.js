@@ -11,7 +11,7 @@ const context = github.context;
 
 async function deleteReleaseAssets() {
   try {
-    const tagName = core.getInput('tag_name', { required: true });
+    const tagName = core.getInput('tag', { required: true });
     const token = core.getInput('token', { required: true });
 
     const octokit = new GitHubOctokit(getOctokitOptions(token, {
