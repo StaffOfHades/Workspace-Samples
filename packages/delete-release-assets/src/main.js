@@ -56,7 +56,7 @@ async function deleteReleaseAssets() {
     }
     const results = await Promise.allSettled(assetIdsForTag.map(asset_id => octokit.rest.repos.deleteReleaseAsset({ ...context.repo, asset_id })))
     const breakdown = results.reduce((output, result, index) => {
-      if (result === 'fulfilled') {
+      if (result.status === 'fulfilled') {
         output.deleted.push(assetIdsForTag[index]);
       } else {
         output.failed.push(assetIdsForTag[index]);
