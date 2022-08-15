@@ -20,6 +20,7 @@
       "options": {
         "cacheableOperations": [
           "package",
+          "browser-build",
           "build",
           "lint",
           "test",
