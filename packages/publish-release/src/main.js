@@ -47,8 +47,9 @@ async function publishRelease() {
     const [matchedRelease] = releasesForTag
     if (matchedRelease === undefined) {
       core.warning(`No draft release founds for tag_name '${tagName}'`)
+      return;
     }
-    await octokit.rest.repos.deleteReleaseAsset({ ...context.repo, draft: false, release_id: matchedRelease.id })
+    await octokit.rest.repos.updateRelease({ ...context.repo, draft: false, release_id: matchedRelease.id })
     core.info(`Release ${matchedRelease.id} was published sucessfully`)
 
     core.setOutput("release-id", matchedRelease.id);
