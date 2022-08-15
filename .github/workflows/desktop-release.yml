@@ -23,13 +23,10 @@ jobs:
           cat package.json | jq -r '.version'
           echo "::set-output name=tag::$(cat package.json | jq -r '.version')"
 
-      - name: Log tag name
-        run: echo ${{ steps.package_version.tag }}
-
       - name: Delete release assets
         uses: ./.github/actions/delete-release-assets
         with:
-          tag: ${{ steps.package_version.tag }}
+          tag: ${{ steps.package_version.outputs.tag }}
           token: ${{ secrets.BOT_TOKEN }}
 
   publish:

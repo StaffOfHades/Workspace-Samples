@@ -19,5 +19,5 @@ jobs:
       - name: Delete release assets
         uses: ./.github/actions/delete-release-assets.yml
         with:
-          tag: ${{ steps.package_version.tag }}
+          tag: ${{ steps.package_version.outputs.tag }}
           token: ${{ secrets.BOT_TOKEN }}
