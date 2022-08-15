@@ -1,6 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "workspace-samples",
+  "cli": {
+    "packageManager": "yarn"
+  },
   "affected": {
     "defaultBase": "main"
   },
@@ -13,19 +16,29 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "browser-build",
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "MDRkZWFmZjUtNGYyOC00NDFlLWI5YTItMmIwNjI4ZmE2YjczfHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "workspaceLayout": {
     "appsDir": "packages",
     "libsDir": "packages"
-  }
+  },
+  "defaultProject": "desktop"
 }

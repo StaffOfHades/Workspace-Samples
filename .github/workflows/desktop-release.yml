@@ -1,0 +1,116 @@
+name: Desktop release
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  delete-release-assets:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') }}
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install package dependencies
+        run: yarn install --immutable --immutable-cache --check-cache
+
+      - name: Get package version
+        id: package_version
+        run: |
+          cat package.json | jq -r '.version'
+          echo "::set-output name=tag::$(cat package.json | jq -r '.version')"
+
+      - name: Delete release assets
+        uses: ./.github/actions/delete-release-assets
+        with:
+          tag: ${{ steps.package_version.outputs.tag }}
+          token: ${{ secrets.BOT_TOKEN }}
+
+  publish:
+    needs: delete-release-assets
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    outputs:
+      macos-latest: ${{ steps.file_mac.outputs.latest }}
+      linux-latest: ${{ steps.file_linux.outputs.latest }}
+      windows-latest: ${{ steps.file_windows.outputs.latest }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Set SHAs
+        uses: nrwl/nx-set-shas@v2
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies for differrent linux flavors
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: sudo apt-get install --no-install-recommends -y libopenjp2-tools libarchive-tools
+
+      - name: Publish electron app
+        run: |
+          yarn install --immutable --immutable-cache --check-cache
+          yarn nx affected --target=package --projects=desktop --configuration=production
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Output latest file (Mac)
+        id: file_mac
+        if:  ${{ matrix.os == 'macos-latest' }}
+        run: |
+          cat dist/packages/desktop/dist/latest-mac.yml
+          echo $(base64 dist/packages/desktop/dist/latest-mac.yml)
+          echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
+      - name: Output latest file (Ubuntu)
+        id: file_linux
+        if:  ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          cat dist/packages/desktop/dist/latest-linux.yml
+          echo $(base64 -w 0 dist/packages/desktop/dist/latest-linux.yml)
+          echo "::set-output name=latest::$(base64 -w 0 dist/packages/desktop/dist/latest-linux.yml)"
+      - name: Output latest file (Windows)
+        id: file_windows
+        if:  ${{ matrix.os == 'windows-latest' }}
+        run: |
+          Get-Content -Path .\dist\packages\desktop\dist\latest.yml
+          Write-Output $([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))
+          Write-Output "::set-output name=latest::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
+
+  update-server-files:
+    runs-on: self-hosted
+    needs: publish
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Add yaml files to server
+        run: |
+          echo ${{ needs.publish.outputs.macos-latest }} > temp.txt
+          cat temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest-mac.yml
+          echo ${{ needs.publish.outputs.linux-latest }} > temp.txt
+          cat temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest-linux.yml
+          echo ${{ needs.publish.outputs.windows-latest }} > temp.txt
+          cat temp.txt
+          base64 --decode temp.txt > packages/server/public/desktop-updates/latest.yml
+          rm temp.txt
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Add desktop release files

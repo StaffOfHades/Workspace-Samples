@@ -1,0 +1,21 @@
+name: Auto-labeler by Release Drafter
+
+on:
+  # pull_request event is required only for autolabeler
+  pull_request:
+    # Only following types are handled by the action, but one can default to all as well
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  autolabeler:
+    permissions:
+      pull-requests: write  # for release-drafter/release-drafter to add label to PR
+    runs-on: self-hosted
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

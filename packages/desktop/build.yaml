@@ -1,0 +1,40 @@
+productName: Desktop
+appId: "tech.inferis"
+extraMetadata:
+  main: 'dist/packages/desktop/main.js'
+files:
+  - 'package.json'
+  - 'dist/packages/desktop/**'
+  - '!dist/packages/desktop/dist/**'
+linux:
+  category: "Office"
+  target:
+    - target: "AppImage"
+    - target: "deb"
+    - target: "pacman"
+mac:
+  category: "public.app-category.medical"
+  target:
+    - target: 'dmg'
+      arch: ['x64', 'arm64']
+  strictVerify: false
+dmg:
+  contents:
+    - x: 410
+      y: 150
+      type: link
+      path: /Applications
+    - x: 130
+      y: 150
+      type: file
+win:
+  target:
+    - target: "nsis"
+      arch: ['x64', 'ia32']
+directories:
+  output: 'dist/packages/desktop/dist'
+publish:
+  provider: 'github'
+  releaseType: 'release'
+nsis:
+  differentialPackage: true

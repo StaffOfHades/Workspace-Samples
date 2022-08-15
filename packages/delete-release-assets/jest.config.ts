@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'desktop',
+  displayName: 'delete-release-assets',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -12,5 +12,5 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/desktop',
+  coverageDirectory: '../../coverage/packages/delete-release-assets',
 };
