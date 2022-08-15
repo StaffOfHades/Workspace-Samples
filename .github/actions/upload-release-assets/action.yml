@@ -1,0 +1,16 @@
+name: Upload release assets
+description: Given a tag name, add a file or list of files if release is found
+inputs:
+  files:
+    description: A list of space-separated file names to upload
+  tag:
+    description: The tag name to use to identify the release
+    required: true
+  token:
+    description: Authorization token for Github
+outputs:
+  asset-urls:
+    description: Array of urls which where successfully deleted
+runs:
+  using: node16
+  main: ../../../packages/upload-release-assets/src/main.js
