@@ -7,7 +7,7 @@ const RELEASE_COUNT_LIMIT = 1000
 
 const GitHubOctokit = GitHub.plugin(throttling)
 
-async function deleteReleaseAssets() {
+async function publishRelease() {
   try {
     const tagName = core.getInput('tag', { required: true });
     const token = core.getInput('token', { required: true });
@@ -43,12 +43,13 @@ async function deleteReleaseAssets() {
     })
     const releasesForTag = allReleases
       .filter(({ draft, tag_name }) => tag_name.includes(tagName) && draft)
-    core.info(`Found ${releasesForTag.length} dreaft release(s) whose tag_name matches '${tagName}'`)
+    core.info(`Found ${releasesForTag.length} draft release(s) whose tag_name matches '${tagName}'`)
     const [matchedRelease] = releasesForTag
     if (matchedRelease === undefined) {
       core.warning(`No draft release founds for tag_name '${tagName}'`)
     }
     await octokit.rest.repos.deleteReleaseAsset({ ...context.repo, draft: false, release_id: matchedRelease.id })
+    core.info(`Release ${matchedRelease.id} was published sucessfully`)
 
     core.setOutput("release-id", matchedRelease.id);
   } catch (error) {
@@ -57,4 +58,4 @@ async function deleteReleaseAssets() {
   }
 }
 
-deleteReleaseAssets()
+publishRelease()
