@@ -1,0 +1,57 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/delete-release-assets/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/delete-release-assets",
+        "main": "packages/delete-release-assets/src/main.js",
+        "tsConfig": "packages/delete-release-assets/tsconfig.app.json",
+        "assets": ["packages/delete-release-assets/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/delete-release-assets/src/environments/environment.js",
+              "with": "packages/delete-release-assets/src/environments/environment.prod.js"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "delete-release-assets:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "delete-release-assets:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/delete-release-assets/**/*.ts", "packages/delete-release-assets/**/*.js"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/delete-release-assets"],
+      "options": {
+        "jestConfig": "packages/delete-release-assets/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

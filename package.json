@@ -9,6 +9,8 @@
   },
   "private": true,
   "devDependencies": {
+    "@actions/core": "^1.9.0",
+    "@actions/github": "^5.0.3",
     "@nrwl/cli": "14.4.3",
     "@nrwl/cypress": "^14.4.3",
     "@nrwl/eslint-plugin-nx": "14.4.3",
@@ -22,6 +24,7 @@
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^9.0.0",
     "@nx-plus/nuxt": "^14.1.0",
+    "@octokit/plugin-throttling": "^4.1.0",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.29.0",

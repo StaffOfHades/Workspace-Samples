@@ -31,11 +31,10 @@
       "inputs": ["{workspaceRoot}/dist/packages/desktop"],
       "options": {
         "command": "yarn electron dist/packages/desktop/main.js"
-       },
+      },
       "dependsOn": ["build"],
       "configurations": {
-        "production": {
-        }
+        "production": {}
       }
     },
     "package": {
