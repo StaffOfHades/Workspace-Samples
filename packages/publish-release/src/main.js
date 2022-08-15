@@ -1,12 +1,11 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
+const context = require('@actions/github').context;
 const { GitHub, getOctokitOptions } = require('@actions/github/lib/utils');
 const { throttling } = require("@octokit/plugin-throttling")
 
 const RELEASE_COUNT_LIMIT = 1000
 
 const GitHubOctokit = GitHub.plugin(throttling)
-const context = github.context;
 
 async function deleteReleaseAssets() {
   try {

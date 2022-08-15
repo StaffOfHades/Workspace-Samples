@@ -1,13 +1,11 @@
-//const { HttpsProxyAgent }  = require ("https-proxy-agent");
 const core = require('@actions/core');
-const github = require('@actions/github');
+const context = require('@actions/github').context;
 const { GitHub, getOctokitOptions } = require('@actions/github/lib/utils');
 const { throttling } = require("@octokit/plugin-throttling")
 
 const RELEASE_COUNT_LIMIT = 1000
 
 const GitHubOctokit = GitHub.plugin(throttling)
-const context = github.context;
 
 async function deleteReleaseAssets() {
   try {
@@ -43,21 +41,21 @@ async function deleteReleaseAssets() {
       }
       return response.data
     })
-    const releasesTag = allReleases
+    const releasesForTag = allReleases
       .filter(({ tag_name }) => tag_name.includes(tagName))
-    core.info(`Found ${releasesTag.length} release(s) whose tag_name matches '${tagName}'`)
-    if (releasesTag.length === 0) {
-      core.warning(`No releases founds for tag_name '${tagName}'`)
+    core.info(`Found ${releasesForTag.length} release(s) whose tag_name matches '${tagName}'`)
+    if (releasesForTag.length === 0) {
+      core.warning(`No release founds for tag_name '${tagName}'`)
       core.setOutput("deleted-assets", []);
       core.setOutput("failed-assets", []);
     }
 
-    const assetIdsForTag = releasesTag
+    const assetIdsForTag = releasesForTag
       .map(({ assets }) => assets)
       .flat()
       .map(({ id }) => id)
     if (assetIdsForTag.length === 0) {
-      core.warning(`No assets founds under release(s) with tag_name '${tagName}'`)
+      core.warning(`No assets found under release(s) with tag_name '${tagName}'`)
       core.setOutput("deleted-assets", []);
       core.setOutput("failed-assets", []);
       return;
