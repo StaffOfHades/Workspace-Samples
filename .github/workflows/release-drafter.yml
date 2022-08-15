@@ -33,10 +33,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
       - name: Update npm version
         run: npm version --git-tag-version=false --allow-same-version ${{ needs.update_release_draft.outputs.tag_name }}
       - name: Create pull request

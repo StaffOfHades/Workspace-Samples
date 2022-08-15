@@ -11,13 +11,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get package version
-        id: package
+        id: package_version
         run: |
           cat package.json | jq -r '.version'
-          echo "::set-output name=version::$(cat package.json | jq -r '.version')"
+          echo "::set-output name=tag::$(cat package.json | jq -r '.version')"
 
       - name: Delete release assets
         uses: ./.github/actions/delete-release-assets.yml
         with:
-          tag: ${{ steps.package.version }}
+          tag: ${{ steps.package_version.tag }}
           token: ${{ secrets.BOT_TOKEN }}

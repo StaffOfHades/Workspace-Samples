@@ -14,6 +14,8 @@ async function deleteReleaseAssets() {
     const tagName = core.getInput('tag', { required: true });
     const token = core.getInput('token', { required: true });
 
+    core.info(`Looking for releases whose tag_name matches '${tagName}'`)
+
     const octokit = new GitHubOctokit(getOctokitOptions(token, {
       throttle: {
         onRateLimit: (retryAfter, options) => {

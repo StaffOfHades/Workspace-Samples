@@ -6,6 +6,11 @@ inputs:
     required: true
   token:
     description: Authorization token for Github
+outputs:
+  deleted-assets:
+    description: Array of ids which where successfully deleted
+  failed-assets:
+    description: Array of ids which failed to be  deleted
 runs:
   using: node16
   main: ../../../packages/delete-release-assets/src/main.js
