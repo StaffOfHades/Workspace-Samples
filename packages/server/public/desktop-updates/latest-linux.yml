@@ -1,9 +1,9 @@
-version: 0.1.0
+version: 0.2.0
 files:
-  - url: Desktop-0.1.0.AppImage
-    sha512: ZEuKTq0sSWZ+HA4a87WseP+A4t3UUNNrgtt7rD27DrQ2BgVYb+0fhUHLXXHskJ90T2WMRlnOwsWyN7uyk6bUfQ==
-    size: 104808228
-    blockMapSize: 110392
-path: Desktop-0.1.0.AppImage
-sha512: ZEuKTq0sSWZ+HA4a87WseP+A4t3UUNNrgtt7rD27DrQ2BgVYb+0fhUHLXXHskJ90T2WMRlnOwsWyN7uyk6bUfQ==
-releaseDate: '2022-08-15T20:16:50.211Z'
+  - url: Desktop-0.2.0.AppImage
+    sha512: gfnue1t2VSj1NvMd+Yd9c18DXZUH6EwAqnpEAKTseVQ2HtextJzbG0ly3mNfqtU3CLfaYYpJcv0Ro0XCQ1e2SQ==
+    size: 104808253
+    blockMapSize: 110417
+path: Desktop-0.2.0.AppImage
+sha512: gfnue1t2VSj1NvMd+Yd9c18DXZUH6EwAqnpEAKTseVQ2HtextJzbG0ly3mNfqtU3CLfaYYpJcv0Ro0XCQ1e2SQ==
+releaseDate: '2022-08-15T21:55:52.507Z'
