@@ -2,7 +2,7 @@
   "author": "Mauricio Graciano <mauricio.gracianoaz@inferis.tech>",
   "name": "workspace-samples",
   "description": "workspace-samples",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "postinstall": "node node_modules/@nx-plus/nuxt/patch-nx-dep-graph.js"
