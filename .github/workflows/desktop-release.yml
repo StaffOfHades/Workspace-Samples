@@ -19,7 +19,9 @@ jobs:
 
       - name: Get package version
         id: package
-        run: echo "::set-output name=version::$(cat package.json | jq -r '.version')"
+        run: |
+          cat package.json | jq -r '.version'
+          echo "::set-output name=version::$(cat package.json | jq -r '.version')"
 
       - name: Delete release assets
         uses: ./.github/actions/delete-release-assets
@@ -69,15 +71,24 @@ jobs:
       - name: Output latest file (Mac)
         id: file_mac
         if:  ${{ matrix.os == 'macos-latest' }}
-        run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
+        run: |
+          cat dist/packages/desktop/dist/latest-mac.yml
+          echo $(base64 dist/packages/desktop/dist/latest-mac.yml)
+          echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-mac.yml)"
       - name: Output latest file (Ubuntu)
         id: file_linux
         if:  ${{ matrix.os == 'ubuntu-latest' }}
-        run: echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-linux.yml)"
+        run: |
+          cat dist/packages/desktop/dist/latest-linux.yml
+          echo $(base64 dist/packages/desktop/dist/latest-linux.yml)
+          echo "::set-output name=latest::$(base64 dist/packages/desktop/dist/latest-linux.yml)"
       - name: Output latest file (Windows)
         id: file_windows
         if:  ${{ matrix.os == 'windows-latest' }}
-        run: Write-Output "::set-output name=latest::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
+        run: |
+          Get-Content -Path .\dist\packages\desktop\dist\latest.yml
+          Write-Output $([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))
+          Write-Output "::set-output name=latest::$([convert]::ToBase64String((Get-Content -Path .\dist\packages\desktop\dist\latest.yml -AsByteStream)))"
 
   update-server-files:
     runs-on: self-hosted
@@ -89,10 +100,13 @@ jobs:
       - name: Add yaml files to server
         run: |
           echo ${{ needs.publish.outputs.macos-latest }} > temp.txt
+          cat temp.txt
           base64 --decode temp.txt > packages/server/public/desktop-updates/latest-mac.yml
           echo ${{ needs.publish.outputs.linux-latest }} > temp.txt
+          cat temp.txt
           base64 --decode temp.txt > packages/server/public/desktop-updates/latest-linux.yml
           echo ${{ needs.publish.outputs.windows-latest }} > temp.txt
+          cat temp.txt
           base64 --decode temp.txt > packages/server/public/desktop-updates/latest.yml
           rm temp.txt
 
