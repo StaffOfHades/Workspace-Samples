@@ -45,7 +45,7 @@ async function deleteReleaseAssets() {
     })
     const releasesTag = allReleases
       .filter(({ tag_name }) => tag_name.includes(tagName))
-    core.info(`Found ${releasesTag.length} releases whose tag_name matches '${tagName}'`)
+    core.info(`Found ${releasesTag.length} release(s) whose tag_name matches '${tagName}'`)
     if (releasesTag.length === 0) {
       core.warning(`No releases founds for tag_name '${tagName}'`)
       core.setOutput("deleted-assets", []);
