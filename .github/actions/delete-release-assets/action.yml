@@ -8,4 +8,4 @@ inputs:
     description: Authorization token for Github
 runs:
   using: node16
-  main: ./packages/delete-release-assets/src/main.js
+  main: ../../../packages/delete-release-assets/src/main.js
