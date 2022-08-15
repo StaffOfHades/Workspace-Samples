@@ -6,6 +6,7 @@
     "desktop": "packages/desktop",
     "frontend": "packages/frontend",
     "frontend-e2e": "packages/frontend-e2e",
+    "publish-release": "packages/publish-release",
     "server": "packages/server"
   }
 }
