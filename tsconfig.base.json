@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@workspace-samples/action-helpers": [
+        "packages/action-helpers/src/index.js"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

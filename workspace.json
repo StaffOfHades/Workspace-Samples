@@ -2,10 +2,12 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "action-helpers": "packages/action-helpers",
     "delete-release-assets": "packages/delete-release-assets",
     "desktop": "packages/desktop",
     "frontend": "packages/frontend",
     "frontend-e2e": "packages/frontend-e2e",
+    "publish-release": "packages/publish-release",
     "server": "packages/server"
   }
 }

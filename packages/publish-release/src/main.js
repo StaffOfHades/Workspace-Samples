@@ -7,7 +7,7 @@ const RELEASE_COUNT_LIMIT = 1000
 
 const GitHubOctokit = GitHub.plugin(throttling)
 
-async function deleteReleaseAssets() {
+async function publishRelease() {
   try {
     const tagName = core.getInput('tag', { required: true });
     const token = core.getInput('token', { required: true });
@@ -42,41 +42,21 @@ async function deleteReleaseAssets() {
       return response.data
     })
     const releasesForTag = allReleases
-      .filter(({ tag_name }) => tag_name.includes(tagName))
-    core.info(`Found ${releasesForTag.length} release(s) whose tag_name matches '${tagName}'`)
-    if (releasesForTag.length === 0) {
-      core.warning(`No release founds for tag_name '${tagName}'`)
-      core.setOutput("deleted-assets", []);
-      core.setOutput("failed-assets", []);
-    }
-
-    const assetIdsForTag = releasesForTag
-      .map(({ assets }) => assets)
-      .flat()
-      .map(({ id }) => id)
-    if (assetIdsForTag.length === 0) {
-      core.warning(`No assets found under release(s) with tag_name '${tagName}'`)
-      core.setOutput("deleted-assets", []);
-      core.setOutput("failed-assets", []);
+      .filter(({ draft, tag_name }) => tag_name.includes(tagName) && draft)
+    core.info(`Found ${releasesForTag.length} draft release(s) whose tag_name matches '${tagName}'`)
+    const [matchedRelease] = releasesForTag
+    if (matchedRelease === undefined) {
+      core.warning(`No draft release founds for tag_name '${tagName}'`)
       return;
     }
-    const results = await Promise.allSettled(assetIdsForTag.map(asset_id => octokit.rest.repos.deleteReleaseAsset({ ...context.repo, asset_id })))
-    const breakdown = results.reduce((output, result, index) => {
-      if (result.status === 'fulfilled') {
-        output.deleted.push(assetIdsForTag[index]);
-      } else {
-        output.failed.push(assetIdsForTag[index]);
-      }
-      return output;
-    }, { deleted: [], failed: [] })
-    core.info(JSON.stringify(breakdown, null, 2))
+    await octokit.rest.repos.updateRelease({ ...context.repo, draft: false, release_id: matchedRelease.id })
+    core.info(`Release ${matchedRelease.id} was published sucessfully`)
 
-    core.setOutput("deleted-assets", breakdown.deleted);
-    core.setOutput("failed-assets", breakdown.failed);
+    core.setOutput("release-id", matchedRelease.id);
   } catch (error) {
     core.error(error)
     core.setFailed(error.message);
   }
 }
 
-deleteReleaseAssets()
+publishRelease()

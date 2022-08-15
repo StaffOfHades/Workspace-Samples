@@ -1,0 +1,14 @@
+name: Publish draft release
+description: Given a tag name for a draft release, publish it
+inputs:
+  tag:
+    description: The tag name to use to identify the release
+    required: true
+  token:
+    description: Authorization token for Github
+outputs:
+  release-id:
+    description: Id of the release that was published
+runs:
+  using: node16
+  main: ../../../packages/publish-release/src/main.js
