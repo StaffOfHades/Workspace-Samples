@@ -1,0 +1,57 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/upload-release-assets/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/upload-release-assets",
+        "main": "packages/upload-release-assets/src/main.js",
+        "tsConfig": "packages/upload-release-assets/tsconfig.app.json",
+        "assets": ["packages/upload-release-assets/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/upload-release-assets/src/environments/environment.js",
+              "with": "packages/upload-release-assets/src/environments/environment.prod.js"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "upload-release-assets:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "upload-release-assets:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/upload-release-assets/**/*.ts", "packages/upload-release-assets/**/*.js"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/upload-release-assets"],
+      "options": {
+        "jestConfig": "packages/upload-release-assets/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
