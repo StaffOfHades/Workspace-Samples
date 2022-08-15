@@ -14,8 +14,6 @@ async function deleteReleaseAssets() {
     const tagName = core.getInput('tag', { required: true });
     const token = core.getInput('token', { required: true });
 
-    core.info(`Looking for releases whose tag_name matches '${tagName}'`)
-
     const octokit = new GitHubOctokit(getOctokitOptions(token, {
       throttle: {
         onRateLimit: (retryAfter, options) => {
@@ -45,13 +43,21 @@ async function deleteReleaseAssets() {
       }
       return response.data
     })
-    const assetIdsForTag = allReleases
+    const releasesTag = allReleases
       .filter(({ tag_name }) => tag_name.includes(tagName))
+    core.info(`Found ${releasesTag.length} releases whose tag_name matches '${tagName}'`)
+    if (releasesTag.length === 0) {
+      core.warning(`No releases founds for tag_name '${tagName}'`)
+      core.setOutput("deleted-assets", []);
+      core.setOutput("failed-assets", []);
+    }
+
+    const assetIdsForTag = releasesTag
       .map(({ assets }) => assets)
       .flat()
       .map(({ id }) => id)
     if (assetIdsForTag.length === 0) {
-      core.warning("No assets founds for release or the release does not exist")
+      core.warning(`No assets founds under release(s) with tag_name '${tagName}'`)
       core.setOutput("deleted-assets", []);
       core.setOutput("failed-assets", []);
       return;
