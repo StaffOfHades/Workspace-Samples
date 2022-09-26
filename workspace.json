@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "action-helpers": "packages/action-helpers",
+    "clear-artifacts": "packages/clear-artifacts",
     "delete-release-assets": "packages/delete-release-assets",
     "desktop": "packages/desktop",
     "frontend": "packages/frontend",
