@@ -9,8 +9,8 @@ const GitHubOctokit = GitHub.plugin(throttling)
 
 async function publishRelease() {
   try {
-    const tagName = "0.1.1";
-    const token = process.env.GITHUB_TOKEN;
+    const tagName = core.getInput('tag', { required: true });
+    const token = core.getInput('token', { required: true });
 
     const octokit = new GitHubOctokit(getOctokitOptions(token, {
       throttle: {
