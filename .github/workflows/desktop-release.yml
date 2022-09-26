@@ -110,6 +110,12 @@ jobs:
           base64 --decode temp.txt > packages/server/public/desktop-updates/latest.yml
           rm temp.txt
 
+      - name: Create artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: electron-builder-latest
+          path: packages/server/public/desktop-updates/
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
