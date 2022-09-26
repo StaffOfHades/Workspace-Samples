@@ -18,13 +18,12 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
 async function publishRelease() {
   let tmpDir;
   try {
-    const artifactName = 'electron-builder-latest';
-    const maxArtifactsToClear = 3;
-    const tagName = '0.2.1';
-    const token = process.env.GITHUB_TOKEN;
+    const artifactName = core.getInput('artifact', { required: true });
+    const maxArtifactsToClear = core.getInput('limit') || 3;
+    const tagName = core.getInput('tag', { required: true });
+    const token = core.getInput('token', { required: true });
 
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'clear-artifacts'));
-    console.info(tmpDir)
 
     const octokit = new GitHubOctokit(
       getOctokitOptions(token, {
@@ -55,13 +54,9 @@ async function publishRelease() {
     const { data: { artifacts: allArtifacts, total_count: artifactCount } } =
       await octokit.rest.actions.listArtifactsForRepo(context.repo);
 
-    console.dir(allArtifacts)
-
     const artifactsForName = allArtifacts.filter(
       ({ expired, name }) => !expired && name === artifactName
     );
-
-    console.dir(artifactsForName)
 
     if (artifactsForName.length <= 0) {
       core.warning(
@@ -87,10 +82,9 @@ async function publishRelease() {
         artifact_id: artifactsForName[index].id,
         archive_format: "zip",
       });
-      console.dir(response)
 
       await new Promise((resolve, reject) => {
-        yauzl.fromBuffer(Buffer.from(response.data), {lazyEntries: true}, function(err, zipfile) {
+        yauzl.fromBuffer(Buffer.from(response.data), { lazyEntries: true }, function(err, zipfile) {
           if (err) {
             return void reject(err);
           }
@@ -132,7 +126,7 @@ async function publishRelease() {
           ).version))])
         });
       })
-      console.dir(yamlFileVersions)
+
       if (yamlFileVersions.some(version => version.includes(tagName))) {
         artifactsCleared = artifactsCleared || true;
         core.info(`Clearing artifact with id ${artifactsForName[index].id}`);
