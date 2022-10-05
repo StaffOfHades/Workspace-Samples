@@ -1,11 +1,11 @@
-version: 0.2.0
+version: 0.2.1
 files:
-  - url: Desktop-0.2.0.dmg
-    sha512: bMTbVj37S6fLIPXmf5ApR7GNNg6DOEpwe9MUrxpykauAqCL32CISI9YFXRisHl+Squb516HscgA8n3H8kJx4tw==
-    size: 101380311
-  - url: Desktop-0.2.0-arm64.dmg
-    sha512: HiOhoq6LpfQjrbErrE/2cafoWPcuXv24Dn40W4v+sN6J7xOGXbbQ0BtOF5LNihHbAffT/qQnFLX4SkW2Clo+/w==
-    size: 98787780
-path: Desktop-0.2.0.dmg
-sha512: bMTbVj37S6fLIPXmf5ApR7GNNg6DOEpwe9MUrxpykauAqCL32CISI9YFXRisHl+Squb516HscgA8n3H8kJx4tw==
-releaseDate: '2022-08-15T21:54:56.375Z'
+  - url: Desktop-0.2.1.dmg
+    sha512: m8KKJZXswe5sP2kD/Hh1ZgolQg9OqFixJLSYaSblg6yEEiGckCQZ3yurFpp3QGfTSDzIkG1fUoY9SEmU3Gg2PA==
+    size: 101380522
+  - url: Desktop-0.2.1-arm64.dmg
+    sha512: qnnvW0fhYv5Ut8vHNJDSPIxxvZvdk4WQT/01q/KgdF/XH9fXiqaKdvYRiIClLj/6T0m3Q+6ZBVXj53nDTecytg==
+    size: 98787995
+path: Desktop-0.2.1.dmg
+sha512: m8KKJZXswe5sP2kD/Hh1ZgolQg9OqFixJLSYaSblg6yEEiGckCQZ3yurFpp3QGfTSDzIkG1fUoY9SEmU3Gg2PA==
+releaseDate: '2022-09-26T18:46:23.206Z'

@@ -2,7 +2,7 @@
   "author": "Mauricio Graciano <mauricio.gracianoaz@inferis.tech>",
   "name": "workspace-samples",
   "description": "workspace-samples",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "scripts": {
     "postinstall": "node node_modules/@nx-plus/nuxt/patch-nx-dep-graph.js"
@@ -50,6 +50,8 @@
   "dependencies": {
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "yaml": "^2.1.1",
+    "yauzl": "^2.10.0"
   }
 }
