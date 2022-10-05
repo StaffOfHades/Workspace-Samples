@@ -1,0 +1,57 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/clear-artifacts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/clear-artifacts",
+        "main": "packages/clear-artifacts/src/main.js",
+        "tsConfig": "packages/clear-artifacts/tsconfig.app.json",
+        "assets": ["packages/clear-artifacts/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/clear-artifacts/src/environments/environment.js",
+              "with": "packages/clear-artifacts/src/environments/environment.prod.js"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "clear-artifacts:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "clear-artifacts:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/clear-artifacts/**/*.js"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/clear-artifacts"],
+      "options": {
+        "jestConfig": "packages/clear-artifacts/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
